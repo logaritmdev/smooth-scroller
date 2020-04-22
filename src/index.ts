@@ -28,7 +28,7 @@ export class SmoothScroller {
 	 * @property wheelDeltaScale
 	 * @since 1.0.0
 	 */
-	public wheelDeltaScale: number = 5
+	public wheelDeltaScale: number = 3.75
 
 	/**
 	 * Whether to disable interaction with iframe during animations.
@@ -345,9 +345,7 @@ export class SmoothScroller {
 	 * @since 1.0.0
 	 * @hidden
 	 */
-	private onWheel = (ev: Event) => {
-
-		let e = ev as WheelEvent // Meh!
+	private onWheel = (e: any) => {
 
 		e.preventDefault()
 
@@ -357,23 +355,30 @@ export class SmoothScroller {
 		let off = 0
 		let min = 0
 		let max = 0
+		let cur = 0
 
 		switch (true) {
 
 			case scrollableX:
 				off = this.offsetX
+				cur = this.getScroll().x
 				min = this.getScrollXMin()
 				max = this.getScrollXMax()
 				break
 
 			case scrollableY:
 				off = this.offsetY
+				cur = this.getScroll().y
 				min = this.getScrollYMin()
 				max = this.getScrollYMax()
 				break
 		}
 
-		off += Math.sign(e.deltaY) * this.wheelDeltaScale * this.velocity
+		let delta = -e.wheelDeltaY / 160
+		if (delta > +1) delta = +1
+		if (delta < -1) delta = -1
+
+		off += delta * this.wheelDeltaScale * this.velocity
 
 		if (off < min) off = min
 		if (off > max) off = max

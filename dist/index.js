@@ -35,7 +35,7 @@ var SmoothScroller = /** @class */ (function () {
          * @property wheelDeltaScale
          * @since 1.0.0
          */
-        this.wheelDeltaScale = 5;
+        this.wheelDeltaScale = 3.75;
         /**
          * Whether to disable interaction with iframe during animations.
          * @property disableIframes
@@ -79,27 +79,34 @@ var SmoothScroller = /** @class */ (function () {
          * @since 1.0.0
          * @hidden
          */
-        this.onWheel = function (ev) {
-            var e = ev; // Meh!
+        this.onWheel = function (e) {
             e.preventDefault();
             var scrollableX = _this.canScrollX();
             var scrollableY = _this.canScrollY();
             var off = 0;
             var min = 0;
             var max = 0;
+            var cur = 0;
             switch (true) {
                 case scrollableX:
                     off = _this.offsetX;
+                    cur = _this.getScroll().x;
                     min = _this.getScrollXMin();
                     max = _this.getScrollXMax();
                     break;
                 case scrollableY:
                     off = _this.offsetY;
+                    cur = _this.getScroll().y;
                     min = _this.getScrollYMin();
                     max = _this.getScrollYMax();
                     break;
             }
-            off += Math.sign(e.deltaY) * _this.wheelDeltaScale * _this.velocity;
+            var delta = -e.wheelDeltaY / 160;
+            if (delta > +1)
+                delta = +1;
+            if (delta < -1)
+                delta = -1;
+            off += delta * _this.wheelDeltaScale * _this.velocity;
             if (off < min)
                 off = min;
             if (off > max)
