@@ -96,6 +96,20 @@ export class SmoothScroller {
 	private animated: boolean = false
 
 	/**
+	 * @property lastDist
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	private lastDist: number = 0
+
+	/**
+	 * @property lastTime
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	private lastTime: number = 0
+
+	/**
 	 * @method getElement
 	 * @since 1.0.0
 	 * @hidden
@@ -262,6 +276,8 @@ export class SmoothScroller {
 	 */
 	private update() {
 
+		let time = Date.now()
+
 		let scrollableX = this.canScrollX()
 		let scrollableY = this.canScrollY()
 
@@ -301,7 +317,25 @@ export class SmoothScroller {
 				break
 		}
 
-		if (dist > 0) {
+		let next = true
+
+		if (this.lastDist == dist) {
+
+			let duration = time - this.lastTime
+			if (duration > 250) {
+				this.lastTime = 0
+				this.lastDist = 0
+				next = false
+			}
+
+		} else {
+
+			this.lastDist = dist
+			this.lastTime = time
+
+		}
+
+		if (next) {
 			requestAnimationFrame(() => this.update())
 			return
 		}
