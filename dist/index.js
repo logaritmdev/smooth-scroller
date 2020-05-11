@@ -60,6 +60,18 @@ var SmoothScroller = /** @class */ (function () {
          * @hidden
          */
         this.animated = false;
+        /**
+         * @property lastDist
+         * @since 1.0.0
+         * @hidden
+         */
+        this.lastDist = 0;
+        /**
+         * @property lastTime
+         * @since 1.0.0
+         * @hidden
+         */
+        this.lastTime = 0;
         //--------------------------------------------------------------------------
         // Events
         //--------------------------------------------------------------------------
@@ -278,6 +290,7 @@ var SmoothScroller = /** @class */ (function () {
      */
     SmoothScroller.prototype.update = function () {
         var _this = this;
+        var time = Date.now();
         var scrollableX = this.canScrollX();
         var scrollableY = this.canScrollY();
         this.animated = true;
@@ -305,7 +318,20 @@ var SmoothScroller = /** @class */ (function () {
                 this.setScrollY(scroll);
                 break;
         }
-        if (dist > 0) {
+        var next = true;
+        if (this.lastDist == dist) {
+            var duration = time - this.lastTime;
+            if (duration > 250) {
+                this.lastTime = 0;
+                this.lastDist = 0;
+                next = false;
+            }
+        }
+        else {
+            this.lastDist = dist;
+            this.lastTime = time;
+        }
+        if (next) {
             requestAnimationFrame(function () { return _this.update(); });
             return;
         }

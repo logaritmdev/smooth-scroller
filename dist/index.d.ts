@@ -64,6 +64,18 @@ export declare class SmoothScroller {
      */
     private animated;
     /**
+     * @property lastDist
+     * @since 1.0.0
+     * @hidden
+     */
+    private lastDist;
+    /**
+     * @property lastTime
+     * @since 1.0.0
+     * @hidden
+     */
+    private lastTime;
+    /**
      * @method getElement
      * @since 1.0.0
      * @hidden
