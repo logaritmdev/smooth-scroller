@@ -47,6 +47,10 @@ export class SmoothScroller {
 	 */
 	constructor(element: Document | HTMLElement) {
 
+		if (navigator.userAgent.indexOf('Edge') > -1) {
+			return
+		}
+
 		this.element = this.getElement(element)
 		this.offsetY = this.element.scrollTop
 		this.offsetX = this.element.scrollLeft
@@ -115,7 +119,7 @@ export class SmoothScroller {
 	 * @hidden
 	 */
 	private getElement(element: Document | HTMLElement) {
-		return element instanceof Document ? element.documentElement : element
+		return element instanceof Document ? document.documentElement : element
 	}
 
 	/**
@@ -157,11 +161,12 @@ export class SmoothScroller {
 	private getBounds() {
 
 		if (this.element == document.documentElement) {
-			return new DOMRect(
-				0, 0,
-				window.innerWidth,
-				window.innerHeight
-			)
+			return {
+				x: 0,
+				y: 0,
+				width: window.innerWidth,
+				height: window.innerHeight
+			}
 		}
 
 		return this.element.getBoundingClientRect()

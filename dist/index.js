@@ -138,6 +138,9 @@ var SmoothScroller = /** @class */ (function () {
                 _this.update();
             }
         };
+        if (navigator.userAgent.indexOf('Edge') > -1) {
+            return;
+        }
         this.element = this.getElement(element);
         this.offsetY = this.element.scrollTop;
         this.offsetX = this.element.scrollLeft;
@@ -157,7 +160,7 @@ var SmoothScroller = /** @class */ (function () {
      * @hidden
      */
     SmoothScroller.prototype.getElement = function (element) {
-        return element instanceof Document ? element.documentElement : element;
+        return element instanceof Document ? document.documentElement : element;
     };
     /**
      * @method getWrapper
@@ -194,7 +197,12 @@ var SmoothScroller = /** @class */ (function () {
      */
     SmoothScroller.prototype.getBounds = function () {
         if (this.element == document.documentElement) {
-            return new DOMRect(0, 0, window.innerWidth, window.innerHeight);
+            return {
+                x: 0,
+                y: 0,
+                width: window.innerWidth,
+                height: window.innerHeight
+            };
         }
         return this.element.getBoundingClientRect();
     };
