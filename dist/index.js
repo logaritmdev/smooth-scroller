@@ -113,7 +113,7 @@ var SmoothScroller = /** @class */ (function () {
                     max = _this.getScrollYMax();
                     break;
             }
-            var delta = -e.wheelDeltaY / 160;
+            var delta = _this.getDelta(e);
             if (delta > +1)
                 delta = +1;
             if (delta < -1)
@@ -359,6 +359,15 @@ var SmoothScroller = /** @class */ (function () {
             element.style.pointerEvents = disable ? 'none' : '';
         });
     };
+    SmoothScroller.prototype.getDelta = function (e) {
+        if ('wheelDeltaY' in e)
+            return -e.wheelDeltaY / 160;
+        if ('deltaY' in e) {
+            return e.deltaY;
+        }
+        return 0;
+    };
     return SmoothScroller;
 }());
 exports.SmoothScroller = SmoothScroller;
+window.SmoothScroller = SmoothScroller;

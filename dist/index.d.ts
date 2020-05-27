@@ -171,6 +171,7 @@ export declare class SmoothScroller {
      * @hidden
      */
     private disableIframesPointerEvents;
+    private getDelta;
     /**
      * @method onScroll
      * @since 1.0.0

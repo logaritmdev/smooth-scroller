@@ -363,6 +363,19 @@ export class SmoothScroller {
 		})
 	}
 
+	private getDelta(e: any) {
+
+		if ('wheelDeltaY' in e)
+			return -e.wheelDeltaY / 160
+
+		if ('deltaY' in e) {
+			return e.deltaY
+		}
+
+		return 0
+
+	}
+
 	//--------------------------------------------------------------------------
 	// Events
 	//--------------------------------------------------------------------------
@@ -413,7 +426,7 @@ export class SmoothScroller {
 				break
 		}
 
-		let delta = -e.wheelDeltaY / 160
+		let delta = this.getDelta(e)
 		if (delta > +1) delta = +1
 		if (delta < -1) delta = -1
 
@@ -443,3 +456,5 @@ export class SmoothScroller {
 		}
 	}
 }
+
+(window as any).SmoothScroller = SmoothScroller
