@@ -10,6 +10,13 @@ export class SmoothScroller {
 	//--------------------------------------------------------------------------
 
 	/**
+	 * The scrolling direction.
+	 * @property direction
+	 * @since 1.0.0
+	 */
+	public direction: string = 'y'
+
+	/**
 	 * The scrolling velocity.
 	 * @property velocity
 	 * @since 1.0.0
@@ -45,12 +52,13 @@ export class SmoothScroller {
 	 * @constructor
 	 * @since 1.0.0
 	 */
-	constructor(element: Document | HTMLElement) {
+	constructor(element: Document | HTMLElement, direction: string) {
 
 		if (navigator.userAgent.indexOf('Edge') > -1) {
 			return
 		}
 
+		this.direction = direction
 		this.element = this.getElement(element)
 		this.offsetY = this.element.scrollTop
 		this.offsetX = this.element.scrollLeft
@@ -286,6 +294,20 @@ export class SmoothScroller {
 		let scrollableX = this.canScrollX()
 		let scrollableY = this.canScrollY()
 
+		switch (this.direction) {
+
+			case 'x':
+				scrollableY = false
+				break
+
+			case 'y':
+				scrollableX = false
+				break
+
+			case 'xy':
+				break
+		}
+
 		this.animated = true
 
 		let offset = 0
@@ -403,6 +425,20 @@ export class SmoothScroller {
 
 		let scrollableX = this.canScrollX()
 		let scrollableY = this.canScrollY()
+
+		switch (this.direction) {
+
+			case 'x':
+				scrollableY = false
+				break
+
+			case 'y':
+				scrollableX = false
+				break
+
+			case 'xy':
+				break
+		}
 
 		let off = 0
 		let min = 0

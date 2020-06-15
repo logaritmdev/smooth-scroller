@@ -13,11 +13,17 @@ var SmoothScroller = /** @class */ (function () {
      * @constructor
      * @since 1.0.0
      */
-    function SmoothScroller(element) {
+    function SmoothScroller(element, direction) {
         var _this = this;
         //--------------------------------------------------------------------------
         // Properties
         //--------------------------------------------------------------------------
+        /**
+         * The scrolling direction.
+         * @property direction
+         * @since 1.0.0
+         */
+        this.direction = 'y';
         /**
          * The scrolling velocity.
          * @property velocity
@@ -95,6 +101,16 @@ var SmoothScroller = /** @class */ (function () {
             e.preventDefault();
             var scrollableX = _this.canScrollX();
             var scrollableY = _this.canScrollY();
+            switch (_this.direction) {
+                case 'x':
+                    scrollableY = false;
+                    break;
+                case 'y':
+                    scrollableX = false;
+                    break;
+                case 'xy':
+                    break;
+            }
             var off = 0;
             var min = 0;
             var max = 0;
@@ -141,6 +157,7 @@ var SmoothScroller = /** @class */ (function () {
         if (navigator.userAgent.indexOf('Edge') > -1) {
             return;
         }
+        this.direction = direction;
         this.element = this.getElement(element);
         this.offsetY = this.element.scrollTop;
         this.offsetX = this.element.scrollLeft;
@@ -301,6 +318,16 @@ var SmoothScroller = /** @class */ (function () {
         var time = Date.now();
         var scrollableX = this.canScrollX();
         var scrollableY = this.canScrollY();
+        switch (this.direction) {
+            case 'x':
+                scrollableY = false;
+                break;
+            case 'y':
+                scrollableX = false;
+                break;
+            case 'xy':
+                break;
+        }
         this.animated = true;
         var offset = 0;
         var scroll = 0;

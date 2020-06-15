@@ -5,6 +5,12 @@
  */
 export declare class SmoothScroller {
     /**
+     * The scrolling direction.
+     * @property direction
+     * @since 1.0.0
+     */
+    direction: string;
+    /**
      * The scrolling velocity.
      * @property velocity
      * @since 1.0.0
@@ -32,7 +38,7 @@ export declare class SmoothScroller {
      * @constructor
      * @since 1.0.0
      */
-    constructor(element: Document | HTMLElement);
+    constructor(element: Document | HTMLElement, direction: string);
     /**
      * Destroyes the smooth scroller.
      * @method destroy
