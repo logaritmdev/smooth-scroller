@@ -98,6 +98,11 @@ var SmoothScroller = /** @class */ (function () {
          * @hidden
          */
         this.onWheel = function (e) {
+            var delta = _this.getDelta(e);
+            var stop = _this.hasOverflowScroll(e.target, Math.sign(delta));
+            if (stop) {
+                return;
+            }
             e.preventDefault();
             var scrollableX = _this.canScrollX();
             var scrollableY = _this.canScrollY();
@@ -129,7 +134,6 @@ var SmoothScroller = /** @class */ (function () {
                     max = _this.getScrollYMax();
                     break;
             }
-            var delta = _this.getDelta(e);
             if (delta > +1)
                 delta = +1;
             if (delta < -1)
@@ -393,6 +397,58 @@ var SmoothScroller = /** @class */ (function () {
             return e.deltaY;
         }
         return 0;
+    };
+    /**
+     * @method hasOverflowScroll
+     * @since 1.0.0
+     * @hidden
+     */
+    SmoothScroller.prototype.hasOverflowScroll = function (element, dir) {
+        if (element == this.element) {
+            return false;
+        }
+        var styles = getComputedStyle(element);
+        var frameW = Math.ceil(element.getBoundingClientRect().width);
+        var frameH = Math.ceil(element.getBoundingClientRect().height);
+        var scrollW = Math.ceil(element.scrollWidth);
+        var scrollH = Math.ceil(element.scrollHeight);
+        if (styles.overflowX == 'visible' &&
+            styles.overflowY == 'visible') {
+            var parent_1 = element.parentElement;
+            if (parent_1) {
+                return this.hasOverflowScroll(parent_1, dir);
+            }
+            return false;
+        }
+        if (styles.overflowX == 'auto' ||
+            styles.overflowX == 'scroll') {
+            if (scrollW > frameW) {
+                return this.canOverflowElementScrollX(element, dir);
+            }
+        }
+        if (styles.overflowY == 'auto' ||
+            styles.overflowY == 'scroll') {
+            if (scrollH > frameH) {
+                return this.canOverflowElementScrollY(element, dir);
+            }
+        }
+        return false;
+    };
+    /**
+     * @method canOverflowElementScrollX
+     * @since 1.0.0
+     * @hidden
+     */
+    SmoothScroller.prototype.canOverflowElementScrollX = function (element, dir) {
+        return dir == 1 ? Math.ceil(element.scrollLeft + element.getBoundingClientRect().width) < Math.ceil(element.scrollWidth) : element.scrollLeft > 0;
+    };
+    /**
+     * @method canOverflowElementScrollY
+     * @since 1.0.0
+     * @hidden
+     */
+    SmoothScroller.prototype.canOverflowElementScrollY = function (element, dir) {
+        return dir == 1 ? Math.ceil(element.scrollTop + element.getBoundingClientRect().height) < Math.ceil(element.scrollHeight) : element.scrollTop > 0;
     };
     return SmoothScroller;
 }());

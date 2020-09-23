@@ -421,6 +421,13 @@ export class SmoothScroller {
 	 */
 	private onWheel = (e: any) => {
 
+		let delta = this.getDelta(e)
+
+		let stop = this.hasOverflowScroll(e.target, Math.sign(delta))
+		if (stop) {
+			return
+		}
+
 		e.preventDefault()
 
 		let scrollableX = this.canScrollX()
@@ -462,7 +469,6 @@ export class SmoothScroller {
 				break
 		}
 
-		let delta = this.getDelta(e)
 		if (delta > +1) delta = +1
 		if (delta < -1) delta = -1
 
@@ -490,6 +496,70 @@ export class SmoothScroller {
 
 			this.update()
 		}
+	}
+
+	/**
+	 * @method hasOverflowScroll
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	private hasOverflowScroll(element: HTMLElement, dir: number): boolean {
+
+		if (element == this.element) {
+			return false
+		}
+
+		let styles = getComputedStyle(element)
+
+		let frameW = Math.ceil(element.getBoundingClientRect().width)
+		let frameH = Math.ceil(element.getBoundingClientRect().height)
+		let scrollW = Math.ceil(element.scrollWidth)
+		let scrollH = Math.ceil(element.scrollHeight)
+
+		if (styles.overflowX == 'visible' &&
+			styles.overflowY == 'visible') {
+
+			let parent = element.parentElement
+			if (parent) {
+				return this.hasOverflowScroll(parent, dir)
+			}
+
+			return false
+		}
+
+		if (styles.overflowX == 'auto' ||
+			styles.overflowX == 'scroll') {
+			if (scrollW > frameW) {
+				return this.canOverflowElementScrollX(element, dir)
+			}
+		}
+
+		if (styles.overflowY == 'auto' ||
+			styles.overflowY == 'scroll') {
+			if (scrollH > frameH) {
+				return this.canOverflowElementScrollY(element, dir)
+			}
+		}
+
+		return false
+	}
+
+	/**
+	 * @method canOverflowElementScrollX
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	private canOverflowElementScrollX(element: HTMLElement, dir: number) {
+		return dir == 1 ? Math.ceil(element.scrollLeft + element.getBoundingClientRect().width) < Math.ceil(element.scrollWidth) : element.scrollLeft > 0
+	}
+
+	/**
+	 * @method canOverflowElementScrollY
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	private canOverflowElementScrollY(element: HTMLElement, dir: number) {
+		return dir == 1 ? Math.ceil(element.scrollTop + element.getBoundingClientRect().height) < Math.ceil(element.scrollHeight) : element.scrollTop > 0
 	}
 }
 

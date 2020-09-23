@@ -190,4 +190,22 @@ export declare class SmoothScroller {
      * @hidden
      */
     private onWheel;
+    /**
+     * @method hasOverflowScroll
+     * @since 1.0.0
+     * @hidden
+     */
+    private hasOverflowScroll;
+    /**
+     * @method canOverflowElementScrollX
+     * @since 1.0.0
+     * @hidden
+     */
+    private canOverflowElementScrollX;
+    /**
+     * @method canOverflowElementScrollY
+     * @since 1.0.0
+     * @hidden
+     */
+    private canOverflowElementScrollY;
 }
