@@ -329,7 +329,7 @@ export class SmoothScroller {
 		let delta = (offset - scroll) / this.friction
 
 		let sign = Math.sign(delta)
-		let dist = Math.ceil(Math.abs(delta))
+		let dist = Math.abs(delta)
 
 		scroll = scroll + (dist * sign)
 

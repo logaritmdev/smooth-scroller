@@ -347,7 +347,7 @@ var SmoothScroller = /** @class */ (function () {
         }
         var delta = (offset - scroll) / this.friction;
         var sign = Math.sign(delta);
-        var dist = Math.ceil(Math.abs(delta));
+        var dist = Math.abs(delta);
         scroll = scroll + (dist * sign);
         switch (true) {
             case scrollableX:
