@@ -44,6 +44,13 @@ export class SmoothScroller {
 	 */
 	public disableIframes: boolean = true
 
+	/**
+	 * Whether to disable the scrolling
+	 * @property disableScroll
+	 * @since 1.0.0
+	 */
+	 public disableScroll: boolean = false
+
 	//--------------------------------------------------------------------------
 	// Methods
 	//--------------------------------------------------------------------------
@@ -421,6 +428,7 @@ export class SmoothScroller {
 	 */
 	private onWheel = (e: any) => {
 
+		if( this.disableScroll ) return
 		let delta = this.getDelta(e)
 
 		let stop = this.hasOverflowScroll(e.target, Math.sign(delta))

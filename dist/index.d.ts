@@ -35,6 +35,12 @@ export declare class SmoothScroller {
      */
     disableIframes: boolean;
     /**
+     * Whether to disable the scrolling
+     * @property disableScroll
+     * @since 1.0.0
+     */
+    disableScroll: boolean;
+    /**
      * @constructor
      * @since 1.0.0
      */

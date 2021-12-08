@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.SmoothScroller = void 0;
 /**
  * Smooth scrolling that uses native scrolling.
  * @class SmoothScroller
@@ -48,6 +49,12 @@ var SmoothScroller = /** @class */ (function () {
          * @since 1.0.0
          */
         this.disableIframes = true;
+        /**
+         * Whether to disable the scrolling
+         * @property disableScroll
+         * @since 1.0.0
+         */
+        this.disableScroll = false;
         /**
          * @property offsetX
          * @since 1.0.0
@@ -98,6 +105,8 @@ var SmoothScroller = /** @class */ (function () {
          * @hidden
          */
         this.onWheel = function (e) {
+            if (_this.disableScroll)
+                return;
             var delta = _this.getDelta(e);
             var stop = _this.hasOverflowScroll(e.target, Math.sign(delta));
             if (stop) {
