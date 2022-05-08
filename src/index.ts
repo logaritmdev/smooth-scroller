@@ -505,7 +505,8 @@ export class SmoothScroller {
 	 */
 	private hasOverflowScroll(element: HTMLElement, dir: number): boolean {
 
-		if (element == this.element) {
+		if (element == this.element ||
+			element == document.body) {
 			return false
 		}
 
@@ -516,8 +517,8 @@ export class SmoothScroller {
 		let scrollW = Math.ceil(element.scrollWidth)
 		let scrollH = Math.ceil(element.scrollHeight)
 
-		if (styles.overflowX == 'visible' &&
-			styles.overflowY == 'visible') {
+		if ((styles.overflowX == 'visible' && styles.overflowY == 'visible') ||
+			(styles.overflowX == 'hidden' && styles.overflowY == 'hidden')) {
 
 			let parent = element.parentElement
 			if (parent) {
