@@ -78,6 +78,12 @@ var SmoothScroller = /** @class */ (function () {
          * @hidden
          */
         this.lastTime = 0;
+        /**
+         * @property frameId
+         * @since 1.0.0
+         * @hidden
+         */
+        this.frameId = null;
         //--------------------------------------------------------------------------
         // Events
         //--------------------------------------------------------------------------
@@ -98,6 +104,12 @@ var SmoothScroller = /** @class */ (function () {
          * @hidden
          */
         this.onWheel = function (e) {
+            if (e.defaultPrevented) {
+                if (_this.frameId) {
+                    _this.frameId = cancelAnimationFrame(_this.frameId);
+                }
+                return;
+            }
             var delta = _this.getDelta(e);
             var stop = _this.hasOverflowScroll(e.target, Math.sign(delta));
             if (stop) {
@@ -371,7 +383,7 @@ var SmoothScroller = /** @class */ (function () {
             this.lastTime = time;
         }
         if (next) {
-            requestAnimationFrame(function () { return _this.update(); });
+            this.frameId = requestAnimationFrame(function () { return _this.update(); });
             return;
         }
         if (this.disableIframes) {
@@ -404,7 +416,8 @@ var SmoothScroller = /** @class */ (function () {
      * @hidden
      */
     SmoothScroller.prototype.hasOverflowScroll = function (element, dir) {
-        if (element == this.element) {
+        if (element == this.element ||
+            element == document.body) {
             return false;
         }
         var styles = getComputedStyle(element);
@@ -412,8 +425,8 @@ var SmoothScroller = /** @class */ (function () {
         var frameH = Math.ceil(element.getBoundingClientRect().height);
         var scrollW = Math.ceil(element.scrollWidth);
         var scrollH = Math.ceil(element.scrollHeight);
-        if (styles.overflowX == 'visible' &&
-            styles.overflowY == 'visible') {
+        if ((styles.overflowX == 'visible' && styles.overflowY == 'visible') ||
+            (styles.overflowX == 'hidden' && styles.overflowY == 'hidden')) {
             var parent_1 = element.parentElement;
             if (parent_1) {
                 return this.hasOverflowScroll(parent_1, dir);

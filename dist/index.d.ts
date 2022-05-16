@@ -82,6 +82,12 @@ export declare class SmoothScroller {
      */
     private lastTime;
     /**
+     * @property frameId
+     * @since 1.0.0
+     * @hidden
+     */
+    private frameId;
+    /**
      * @method getElement
      * @since 1.0.0
      * @hidden

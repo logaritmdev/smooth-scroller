@@ -122,6 +122,13 @@ export class SmoothScroller {
 	private lastTime: number = 0
 
 	/**
+	 * @property frameId
+	 * @since 1.0.0
+	 * @hidden
+	 */
+	private frameId: any = null
+
+	/**
 	 * @method getElement
 	 * @since 1.0.0
 	 * @hidden
@@ -363,7 +370,7 @@ export class SmoothScroller {
 		}
 
 		if (next) {
-			requestAnimationFrame(() => this.update())
+			this.frameId = requestAnimationFrame(() => this.update())
 			return
 		}
 
@@ -420,6 +427,15 @@ export class SmoothScroller {
 	 * @hidden
 	 */
 	private onWheel = (e: any) => {
+
+		if (e.defaultPrevented) {
+
+			if (this.frameId) {
+				this.frameId = cancelAnimationFrame(this.frameId)
+			}
+
+			return
+		}
 
 		let delta = this.getDelta(e)
 
