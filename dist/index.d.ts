@@ -46,6 +46,12 @@ export declare class SmoothScroller {
      */
     destroy(): void;
     /**
+     * Stops scrolling.
+     * @method stop
+     * @since 1.0.0
+     */
+    stop(): void;
+    /**
      * @property element
      * @since 1.0.0
      * @hidden
@@ -183,6 +189,11 @@ export declare class SmoothScroller {
      * @hidden
      */
     private disableIframesPointerEvents;
+    /**
+     * @method getDelta
+     * @since 1.0.0
+     * @hidden
+     */
     private getDelta;
     /**
      * @method onScroll

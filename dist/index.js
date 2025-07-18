@@ -105,9 +105,7 @@ var SmoothScroller = /** @class */ (function () {
          */
         this.onWheel = function (e) {
             if (e.defaultPrevented) {
-                if (_this.frameId) {
-                    _this.frameId = cancelAnimationFrame(_this.frameId);
-                }
+                _this.stop();
                 return;
             }
             var delta = _this.getDelta(e);
@@ -186,6 +184,17 @@ var SmoothScroller = /** @class */ (function () {
      */
     SmoothScroller.prototype.destroy = function () {
         this.detach();
+    };
+    /**
+     * Stops scrolling.
+     * @method stop
+     * @since 1.0.0
+     */
+    SmoothScroller.prototype.stop = function () {
+        if (this.frameId) {
+            this.frameId = cancelAnimationFrame(this.frameId);
+        }
+        this.animated = false;
     };
     /**
      * @method getElement
@@ -402,6 +411,11 @@ var SmoothScroller = /** @class */ (function () {
             element.style.pointerEvents = disable ? 'none' : '';
         });
     };
+    /**
+     * @method getDelta
+     * @since 1.0.0
+     * @hidden
+     */
     SmoothScroller.prototype.getDelta = function (e) {
         if ('wheelDeltaY' in e)
             return -e.wheelDeltaY / 160;

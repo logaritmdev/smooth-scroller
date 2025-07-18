@@ -75,6 +75,20 @@ export class SmoothScroller {
 		this.detach()
 	}
 
+	/**
+	 * Stops scrolling.
+	 * @method stop
+	 * @since 1.0.0
+	 */
+	public stop() {
+
+		if (this.frameId) {
+			this.frameId = cancelAnimationFrame(this.frameId)
+		}
+
+		this.animated = false
+	}
+
 	//--------------------------------------------------------------------------
 	// Private API
 	//--------------------------------------------------------------------------
@@ -392,6 +406,11 @@ export class SmoothScroller {
 		})
 	}
 
+	/**
+	 * @method getDelta
+	 * @since 1.0.0
+	 * @hidden
+	 */
 	private getDelta(e: any) {
 
 		if ('wheelDeltaY' in e)
@@ -429,11 +448,7 @@ export class SmoothScroller {
 	private onWheel = (e: any) => {
 
 		if (e.defaultPrevented) {
-
-			if (this.frameId) {
-				this.frameId = cancelAnimationFrame(this.frameId)
-			}
-
+			this.stop()
 			return
 		}
 
